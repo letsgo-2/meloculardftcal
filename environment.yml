@@ -1,0 +1,17 @@
+name: dft-workflow
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scipy
+  - tqdm
+  - pillow
+  - openpyxl
+  - scikit-learn
+  - umap-learn
+  - rdkit
+  - openbabel

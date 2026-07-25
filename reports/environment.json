@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-07-25T13:02:29.724912+00:00",
+  "scope": "current_runtime_capabilities",
+  "reference_environment": "config/agent_interface.json",
+  "python": {
+    "version": "3.12.2",
+    "executable_kind": "python3"
+  },
+  "platform": {
+    "system": "Linux",
+    "release": "5.15.0-139-generic",
+    "machine": "x86_64",
+    "cpu_model": "Intel(R) Core(TM) i7-14700K",
+    "logical_cpus": 28,
+    "memory_gib": 62.48
+  },
+  "python_packages": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "scipy": "1.15.2",
+    "matplotlib": "3.8.4",
+    "seaborn": "0.13.2",
+    "rdkit": "2025.9.3",
+    "openpyxl": "3.1.2",
+    "scikit_learn": "1.4.2",
+    "umap_learn": null
+  },
+  "commands": {
+    "obabel": {
+      "available": true,
+      "version": "Open Babel 3.1.0 -- May 20 2025 -- 13:37:34",
+      "returncode": 0
+    },
+    "mpirun": {
+      "available": true,
+      "version": "mpirun (Open MPI) 4.0.3",
+      "returncode": 0
+    },
+    "sbatch": {
+      "available": false,
+      "version": null
+    },
+    "squeue": {
+      "available": false,
+      "version": null
+    },
+    "orca": {
+      "available": false,
+      "configured_by": "ORCA_BIN",
+      "version": null,
+      "reason": "ORCA_BIN is not set"
+    }
+  }
+}

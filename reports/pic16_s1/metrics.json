@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-07-25T13:02:29.657481+00:00",
+  "dataset_id": "pic16_s1",
+  "display_label": "S1",
+  "inputs": {
+    "source": "data/core/pic16_s1/input/pic16.csv",
+    "dataset": "data/core/pic16_s1/final/pic16inpdftv22.csv",
+    "td_summary": "data/core/pic16_s1/intermediate/pic16inpout_tdv2.csv",
+    "v20": "data/core/pic16_s1/intermediate/pic16inpdftv20.csv",
+    "v21": "data/core/pic16_s1/intermediate/pic16inpdftv21.csv",
+    "reference": "05_analysis/data/publishinpdftv22.csv"
+  },
+  "sha256": {
+    "data/core/pic16_s1/input/pic16.csv": "224c9d5e53b9c03b76afa1f9e95eb1b99e09811941fe4b0015e802ff0599979b",
+    "data/core/pic16_s1/final/pic16inpdftv22.csv": "2019eef179bbbb01758c905132de62b91122110b1d55f66a55aa4d5b834f5886",
+    "05_analysis/data/publishinpdftv22.csv": "b40d2245f7e27e3160bab7d74c980220ab8d6eb4a43db055ec0d5b20af87f80a"
+  },
+  "pipeline_counts": {
+    "N_input": 222,
+    "N_td_summary": 222,
+    "N_v20": 222,
+    "N_v21": 222,
+    "N_v22": 222,
+    "N_complete_v22": 222,
+    "N_no_imaginary": 191,
+    "N_opt_normal": null,
+    "N_td_normal": null,
+    "normal_termination_note": "Raw ORCA logs are intentionally not bundled; normal-termination counts require work/<batch>inp/*.log."
+  },
+  "pipeline_rates": {
+    "td_summary_coverage_of_input": 1.0,
+    "v20_coverage_of_input": 1.0,
+    "v21_coverage_of_input": 1.0,
+    "v22_coverage_of_input": 1.0,
+    "complete_v22_rate": 1.0,
+    "no_imaginary_rate": 0.8603603603603603,
+    "opt_normal_termination_rate": null,
+    "td_normal_termination_rate": null
+  },
+  "quality": {
+    "required_columns": [
+      "ID",
+      "SMILES",
+      "S1_energy_eV",
+      "T1_energy_eV",
+      "S1_fosc_D2",
+      "S1_wavelength_nm",
+      "min_positive_S1-Ti",
+      "max_SOCME_S1_Ti_value",
+      "max_SOCME_over_deltaE_S1_Ti_value",
+      "HOMO(eV)",
+      "LUMO(eV)",
+      "Gap(eV)",
+      "Dipole(D)",
+      "Imaginary",
+      "LogP",
+      "TPSA",
+      "SA_Score"
+    ],
+    "missing_required_columns": [],
+    "all_ids_unique": true,
+    "all_smiles_present": true
+  },
+  "scientific_performance": {
+    "pareto_gap_vs_soc_ratio": {
+      "valid_rows": 222,
+      "nondominated_rows": 2,
+      "fraction": 0.009009009009009009,
+      "directions": {
+        "min_positive_S1-Ti": "minimize",
+        "max_SOCME_over_deltaE_S1_Ti_value": "maximize"
+      }
+    },
+    "pareto_gap_soc_ratio_3d": {
+      "valid_rows": 222,
+      "nondominated_rows": 14,
+      "fraction": 0.06306306306306306,
+      "directions": {
+        "min_positive_S1-Ti": "minimize",
+        "max_SOCME_S1_Ti_value": "maximize",
+        "max_SOCME_over_deltaE_S1_Ti_value": "maximize"
+      }
+    },
+    "targeting_window": {
+      "logp": [
+        1.0,
+        5.0
+      ],
+      "tpsa_angstrom2": [
+        20.0,
+        120.0
+      ],
+      "matching_rows": 0,
+      "fraction": 0.0,
+      "interpretation": "Visualization default only; zero hits indicates that this window is not suitable for this chemical space."
+    },
+    "reference_benchmark": {
+      "reference_path": "05_analysis/data/publishinpdftv22.csv",
+      "reference_index": "pic16",
+      "reference_values": {
+        "min_positive_S1-Ti": 0.179111,
+        "max_SOCME_S1_Ti_value": 0.188944,
+        "max_SOCME_over_deltaE_S1_Ti_value": 0.304956,
+        "Imaginary": "Yes"
+      },
+      "gap_and_ratio_better_or_equal": {
+        "all_rows": 175,
+        "all_fraction": 0.7882882882882883,
+        "no_imaginary_rows": 156,
+        "no_imaginary_fraction": 0.8167539267015707
+      },
+      "gap_soc_and_ratio_better_or_equal": {
+        "all_rows": 155,
+        "all_fraction": 0.6981981981981982,
+        "no_imaginary_rows": 138,
+        "no_imaginary_fraction": 0.7225130890052356
+      },
+      "comparison_contract": "Compare only data produced with a scientifically compatible quantum protocol.",
+      "warning": "The selected reference has an imaginary frequency and is an electronic-property benchmark, not a validated minimum."
+    }
+  },
+  "property_summary": {
+    "S1_energy_eV": {
+      "count": 222,
+      "min": 1.314443,
+      "p10": 1.8869378,
+      "p25": 1.926661,
+      "median": 1.99048,
+      "mean": 2.0285939369369372,
+      "p75": 2.169268,
+      "p90": 2.1984764,
+      "max": 2.220096
+    },
+    "T1_energy_eV": {
+      "count": 222,
+      "min": 0.331535,
+      "p10": 1.1706787,
+      "p25": 1.23392525,
+      "median": 1.3032184999999998,
+      "mean": 1.3474796441441443,
+      "p75": 1.51879025,
+      "p90": 1.5594248,
+      "max": 1.57919
+    },
+    "S1_fosc_D2": {
+      "count": 222,
+      "min": 2.126e-06,
+      "p10": 0.0077353748,
+      "p25": 0.0224853425,
+      "median": 0.0741224375,
+      "mean": 0.11456067622072073,
+      "p75": 0.17022983275,
+      "p90": 0.26298001070000004,
+      "max": 0.930822343
+    },
+    "S1_wavelength_nm": {
+      "count": 222,
+      "min": 558.5,
+      "p10": 563.91,
+      "p25": 571.55,
+      "median": 622.85,
+      "mean": 614.3072072072072,
+      "p75": 643.525,
+      "p90": 657.08,
+      "max": 943.2
+    },
+    "S1-T1": {
+      "count": 222,
+      "min": 0.596813,
+      "p10": 0.6302838,
+      "p25": 0.6437675,
+      "median": 0.6610285,
+      "mean": 0.6811142927927926,
+      "p75": 0.69668625,
+      "p90": 0.7266393,
+      "max": 1.620515
+    },
+    "min_positive_S1-Ti": {
+      "count": 222,
+      "min": 0.002361,
+      "p10": 0.029924000000000003,
+      "p25": 0.06703475,
+      "median": 0.109815,
+      "mean": 0.13506512162162163,
+      "p75": 0.156985,
+      "p90": 0.19971850000000002,
+      "max": 0.62015
+    },
+    "max_SOCME_S1_Ti_value": {
+      "count": 222,
+      "min": 0.022361,
+      "p10": 0.0993425,
+      "p25": 0.24828675,
+      "median": 1.590424,
+      "mean": 1.4331716981981983,
+      "p75": 2.1950267500000002,
+      "p90": 2.8068323,
+      "max": 3.528399
+    },
+    "max_SOCME_over_deltaE_S1_Ti_value": {
+      "count": 222,
+      "min": 0.07093,
+      "p10": 0.3177773,
+      "p25": 1.07247925,
+      "median": 3.4576535,
+      "mean": 6.2595640495495495,
+      "p75": 5.71028,
+      "p90": 12.302145900000001,
+      "max": 110.164632
+    },
+    "HOMO(eV)": {
+      "count": 222,
+      "min": -6.5885,
+      "p10": -6.25627,
+      "p25": -5.902975,
+      "median": -5.63485,
+      "mean": -5.5559576576576575,
+      "p75": -5.079325000000001,
+      "p90": -4.8793,
+      "max": -4.3699
+    },
+    "LUMO(eV)": {
+      "count": 222,
+      "min": -4.3722,
+      "p10": -3.78319,
+      "p25": -3.7108749999999997,
+      "median": -3.5917000000000003,
+      "mean": -3.4513963963963965,
+      "p75": -3.250975,
+      "p90": -2.81694,
+      "max": -2.4721
+    },
+    "Gap(eV)": {
+      "count": 222,
+      "min": 0.8387000000000002,
+      "p10": 1.46603,
+      "p25": 1.87515,
+      "median": 2.1183,
+      "mean": 2.1045612612612614,
+      "p75": 2.3372250000000006,
+      "p90": 2.75197,
+      "max": 2.8867000000000003
+    },
+    "Dipole(D)": {
+      "count": 222,
+      "min": 0.000475789,
+      "p10": 0.35178944110000004,
+      "p25": 1.62832056875,
+      "median": 5.5310419835,
+      "mean": 6.475867007720721,
+      "p75": 8.62001590425,
+      "p90": 12.019103962600001,
+      "max": 72.366030195
+    },
+    "LogP": {
+      "count": 222,
+      "min": 3.767,
+      "p10": 10.0394,
+      "p25": 11.969,
+      "median": 14.0835,
+      "mean": 14.556454954954956,
+      "p75": 16.638,
+      "p90": 19.401400000000002,
+      "max": 28.006
+    },
+    "TPSA": {
+      "count": 222,
+      "min": 57.36,
+      "p10": 65.12,
+      "p25": 71.6,
+      "median": 72.88,
+      "mean": 96.60153153153153,
+      "p75": 107.24,
+      "p90": 165.42800000000003,
+      "max": 301.68
+    },
+    "SA_Score": {
+      "count": 222,
+      "min": 5.022,
+      "p10": 5.8019,
+      "p25": 6.03125,
+      "median": 6.2455,
+      "mean": 6.310540540540541,
+      "p75": 6.546250000000001,
+      "p90": 6.963,
+      "max": 7.935
+    },
+    "Molecular_Weight": {
+      "count": 222,
+      "min": 638.8680000000002,
+      "p10": 835.4575999999997,
+      "p25": 899.1795,
+      "median": 987.2679999999996,
+      "mean": 1005.4555855855853,
+      "p75": 1104.8674999999994,
+      "p90": 1208.9767999999995,
+      "max": 1467.9719999999993
+    }
+  },
+  "output": "reports/pic16_s1/metrics.json"
+}

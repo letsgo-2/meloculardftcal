@@ -1,0 +1,608 @@
+{
+  "schema_version": "1.0",
+  "repository": {
+    "name": "meloculardftcal",
+    "url": "https://github.com/letsgo-2/meloculardftcal.git",
+    "path_policy": "repository_relative",
+    "default_batch": "pic16",
+    "default_display_label": "S1"
+  },
+  "software": {
+    "python": {
+      "minimum_version": "3.9",
+      "environment_file": "environment.yml",
+      "pip_requirements": "requirements.txt"
+    },
+    "orca": {
+      "reference_version": "6.0.1",
+      "reference_build": "linux_x86-64_shared_openmpi416_avx2",
+      "executable_env": "ORCA_BIN",
+      "included_in_repository": false
+    },
+    "mpi": {
+      "reference_implementation": "OpenMPI",
+      "reference_version": "4.1.6"
+    },
+    "ucx": {
+      "reference_version": "1.15.0"
+    },
+    "scheduler": {
+      "implementation": "Slurm"
+    },
+    "structure_and_images": {
+      "openbabel_cli": "obabel"
+    },
+    "cheminformatics": {
+      "rdkit": "environment_managed"
+    }
+  },
+  "reference_hardware": {
+    "cpu_model": "AMD EPYC 7H12 64-Core Processor",
+    "sockets": 2,
+    "physical_cores": 128,
+    "logical_cpus": 256,
+    "memory_gib": 503,
+    "gpu_required": false
+  },
+  "paths": {
+    "cluster_config_template": "config/cluster.env.example",
+    "cluster_config_private": "config/cluster.env",
+    "batch_label_map": "config/pictos.txt",
+    "core_dataset_readme": "data/core/pic16_s1/DATASET.md",
+    "core_checksums": "data/core/pic16_s1/SHA256SUMS",
+    "core_input_csv": "data/core/pic16_s1/input/pic16.csv",
+    "core_td_summary_csv": "data/core/pic16_s1/intermediate/pic16inpout_tdv2.csv",
+    "core_v20_csv": "data/core/pic16_s1/intermediate/pic16inpdftv20.csv",
+    "core_v21_csv": "data/core/pic16_s1/intermediate/pic16inpdftv21.csv",
+    "core_v22_csv": "data/core/pic16_s1/final/pic16inpdftv22.csv",
+    "performance_reference_csv": "05_analysis/data/publishinpdftv22.csv",
+    "user_raw_data_root": "data/raw",
+    "user_processed_data_root": "data/processed",
+    "work_root": "work",
+    "figure_root": "results/figures",
+    "metrics_report": "reports/pic16_s1/metrics.json",
+    "environment_report": "reports/environment.json",
+    "run_manifest_root": "reports/runs"
+  },
+  "path_templates": {
+    "source_csv": "data/raw/{batch}.csv",
+    "structure_dir": "work/{batch}",
+    "calculation_dir": "work/{batch}inp",
+    "parse_dir": "work/{batch}inpout",
+    "opt_log": "work/{batch}inp/{batch}_{id}.log",
+    "td_log": "work/{batch}inp/{batch}_{id}td.log",
+    "opt_summary": "work/{batch}inpout/{batch}inpout_opt.csv",
+    "td_summary": "work/{batch}inpout/{batch}inpout_tdv2.csv",
+    "v20": "work/{batch}inpout/{batch}inpdftv20.csv",
+    "v21": "data/processed/{batch}inpdftv21.csv",
+    "v22": "data/processed/{batch}inpdftv22.csv",
+    "run_manifest": "reports/runs/{run_id}.json",
+    "metrics": "reports/{batch}/metrics.json",
+    "figures": "results/figures/{batch}"
+  },
+  "scheduler_defaults": {
+    "partition": "amd_512q",
+    "nodes": 1,
+    "opt_mpi_ranks": 64,
+    "td_mpi_ranks": 32,
+    "omp_threads_per_rank": 1,
+    "maxcore_mb_per_rank": 3000,
+    "max_jobs_per_user": 20,
+    "poll_interval_seconds": 1800
+  },
+  "scheduler_tools": {
+    "submit_opt": "02_cluster_execution/suboptsbatch.sh",
+    "submit_td": "02_cluster_execution/subtdsbatch.sh",
+    "find_missing_opt": "02_cluster_execution/find_missing_opt_ids.sh",
+    "find_missing_td": "02_cluster_execution/find_missing_td_ids.sh",
+    "list_opt_jobs": "02_cluster_execution/list_opt_jobs.sh",
+    "list_td_jobs": "02_cluster_execution/list_td_jobs.sh",
+    "auto_submit_opt": "02_cluster_execution/auto_submit_opt.sh",
+    "auto_submit_td": "02_cluster_execution/auto_submit_td.sh"
+  },
+  "quantum_profiles": {
+    "opt_standard": {
+      "generator": "01_structure_preparation/gjf_to_inp.sh",
+      "method": "B3LYP",
+      "basis": "def2-SVP",
+      "tasks": [
+        "Opt",
+        "Freq"
+      ],
+      "keywords": [
+        "RIJCOSX",
+        "CPCM(Water)"
+      ],
+      "mpi_ranks": 64,
+      "maxcore_mb_per_rank": 3000
+    },
+    "opt_heavy_zora": {
+      "generator": "01_structure_preparation/gjf_to_inpp13.sh",
+      "method": "PBE0",
+      "basis": "ZORA-def2-TZVP",
+      "auxiliary_basis": "SARC/J",
+      "tasks": [
+        "Opt",
+        "Freq"
+      ],
+      "keywords": [
+        "D3BJ",
+        "ZORA",
+        "RIJCOSX",
+        "TightSCF",
+        "CPCM(Water)"
+      ],
+      "mpi_ranks": 64,
+      "maxcore_mb_per_rank": 3000
+    },
+    "td_standard": {
+      "generator": "01_structure_preparation/gjf_to_inptd.sh",
+      "method": "wB97X-D3",
+      "basis": "def2-TZVP",
+      "keywords": [
+        "RIJCOSX",
+        "TightSCF",
+        "CPCM(Water)"
+      ],
+      "nroots": 10,
+      "triplets": true,
+      "dosoc": true,
+      "guess": "MORead",
+      "mpi_ranks": 32,
+      "maxcore_mb_per_rank": 3000
+    },
+    "td_heavy_zora": {
+      "generator": "01_structure_preparation/gjf_to_inptdp13.sh",
+      "method": "wB97X-D3",
+      "basis": "ZORA-def2-TZVP",
+      "auxiliary_basis": "SARC/J",
+      "keywords": [
+        "ZORA",
+        "RIJCOSX",
+        "RI-SOMF(1X)",
+        "TightSCF",
+        "CPCM(Water)"
+      ],
+      "nroots": 10,
+      "triplets": true,
+      "dosoc": true,
+      "guess": "MORead",
+      "mpi_ranks": 32,
+      "maxcore_mb_per_rank": 3000
+    }
+  },
+  "stages": {
+    "S00_PREFLIGHT": {
+      "entrypoint": "07_validation/check_environment.py",
+      "argv_template": [
+        "--output",
+        "reports/environment.json"
+      ],
+      "inputs": [
+        "environment.yml",
+        "config/cluster.env"
+      ],
+      "outputs": [
+        "reports/environment.json"
+      ],
+      "external_mutation": false
+    },
+    "S10_STRUCTURE": {
+      "entrypoint": "01_structure_preparation/convertInputs.py",
+      "argv_template": [
+        "1",
+        "data/raw/{batch}.csv",
+        "work/{batch}"
+      ],
+      "inputs": [
+        "data/raw/{batch}.csv"
+      ],
+      "outputs": [
+        "work/{batch}/{batch}_{id}.gjf"
+      ],
+      "external_mutation": false
+    },
+    "S20_OPT_GENERATE": {
+      "entrypoint": "01_structure_preparation/gjf_to_inp.sh",
+      "alternate_entrypoint": "01_structure_preparation/gjf_to_inpp13.sh",
+      "argv_template": [
+        "work/{batch}",
+        "work/{batch}inp"
+      ],
+      "inputs": [
+        "work/{batch}/{batch}_{id}.gjf",
+        "config/cluster.env"
+      ],
+      "outputs": [
+        "work/{batch}inp/{batch}_{id}.inp",
+        "work/{batch}inp/{batch}_{id}.sh"
+      ],
+      "external_mutation": false
+    },
+    "S21_OPT_SUBMIT": {
+      "entrypoint": "02_cluster_execution/suboptsbatch.sh",
+      "argv_template": [
+        "work/{batch}inp",
+        "{id_or_range}"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}.sh"
+      ],
+      "outputs": [
+        "work/{batch}inp/{batch}_{id}.log",
+        "work/{batch}inp/{batch}_{id}.xyz",
+        "work/{batch}inp/{batch}_{id}.gbw"
+      ],
+      "external_mutation": true,
+      "authority_required": "submit_slurm_jobs"
+    },
+    "S22_OPT_QC": {
+      "entrypoint": "02_cluster_execution/find_missing_opt_ids.sh",
+      "argv_template": [
+        "work/{batch}inp"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}.log"
+      ],
+      "outputs": [
+        "stdout_missing_ids"
+      ],
+      "external_mutation": false
+    },
+    "S30_TD_GENERATE": {
+      "entrypoint": "01_structure_preparation/gjf_to_inptd.sh",
+      "alternate_entrypoint": "01_structure_preparation/gjf_to_inptdp13.sh",
+      "argv_template": [
+        "work/{batch}",
+        "work/{batch}inp"
+      ],
+      "inputs": [
+        "work/{batch}/{batch}_{id}.gjf",
+        "work/{batch}inp/{batch}_{id}.xyz",
+        "work/{batch}inp/{batch}_{id}.gbw",
+        "config/cluster.env"
+      ],
+      "outputs": [
+        "work/{batch}inp/{batch}_{id}td.inp",
+        "work/{batch}inp/{batch}_{id}td.sh"
+      ],
+      "external_mutation": false
+    },
+    "S31_TD_SUBMIT": {
+      "entrypoint": "02_cluster_execution/subtdsbatch.sh",
+      "argv_template": [
+        "work/{batch}inp",
+        "{id_or_range}"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}td.sh"
+      ],
+      "outputs": [
+        "work/{batch}inp/{batch}_{id}td.log"
+      ],
+      "external_mutation": true,
+      "authority_required": "submit_slurm_jobs"
+    },
+    "S32_TD_QC": {
+      "entrypoint": "02_cluster_execution/find_missing_td_ids.sh",
+      "argv_template": [
+        "work/{batch}inp"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}td.log"
+      ],
+      "outputs": [
+        "stdout_missing_ids"
+      ],
+      "external_mutation": false
+    },
+    "S40_PARSE_OPT": {
+      "entrypoint": "03_result_parsing/parse_orca_opt.py",
+      "argv_template": [
+        "work/{batch}inp",
+        "--output",
+        "work/{batch}inpout"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}.log"
+      ],
+      "outputs": [
+        "work/{batch}inpout/{batch}inpout_opt.csv"
+      ],
+      "external_mutation": false
+    },
+    "S41_PARSE_TD": {
+      "entrypoint": "03_result_parsing/parse_orca_td_socv2.py",
+      "argv_template": [
+        "work/{batch}inp",
+        "--csv",
+        "data/raw/{batch}.csv",
+        "--output",
+        "work/{batch}inpout"
+      ],
+      "inputs": [
+        "work/{batch}inp/{batch}_{id}td.log",
+        "data/raw/{batch}.csv"
+      ],
+      "outputs": [
+        "work/{batch}inpout/{batch}_{id}td.csv",
+        "work/{batch}inpout/{batch}inpout_tdv2.csv"
+      ],
+      "external_mutation": false
+    },
+    "S42_MERGE_DFT": {
+      "entrypoint": "03_result_parsing/merge_dft_csv.py",
+      "argv_template": [
+        "work/{batch}inp",
+        "--output",
+        "work/{batch}inpout"
+      ],
+      "inputs": [
+        "work/{batch}inpout/{batch}inpout_opt.csv",
+        "work/{batch}inpout/{batch}inpout_tdv2.csv"
+      ],
+      "outputs": [
+        "work/{batch}inpout/{batch}inpdftv20.csv"
+      ],
+      "external_mutation": false
+    },
+    "S50_MERGE_SOURCE": {
+      "entrypoint": "04_data_processing/merge_summary.py",
+      "argv_template": [
+        "--piccsvfile",
+        "data/raw/{batch}.csv",
+        "--summary",
+        "work/{batch}inpout/{batch}inpdftv20.csv",
+        "--output",
+        "data/processed/{batch}inpdftv21.csv"
+      ],
+      "inputs": [
+        "data/raw/{batch}.csv",
+        "work/{batch}inpout/{batch}inpdftv20.csv"
+      ],
+      "outputs": [
+        "data/processed/{batch}inpdftv21.csv"
+      ],
+      "external_mutation": false
+    },
+    "S51_ENRICH": {
+      "entrypoint": "04_data_processing/addrdkit.py",
+      "argv_template": [
+        "data/processed/{batch}inpdftv21.csv",
+        "--output",
+        "data/processed/{batch}inpdftv22.csv"
+      ],
+      "inputs": [
+        "data/processed/{batch}inpdftv21.csv"
+      ],
+      "outputs": [
+        "data/processed/{batch}inpdftv22.csv"
+      ],
+      "external_mutation": false
+    },
+    "S60_METRICS": {
+      "entrypoint": "07_validation/collect_metrics.py",
+      "argv_template": [
+        "--source",
+        "data/raw/{batch}.csv",
+        "--dataset",
+        "data/processed/{batch}inpdftv22.csv",
+        "--td-summary",
+        "work/{batch}inpout/{batch}inpout_tdv2.csv",
+        "--v20",
+        "work/{batch}inpout/{batch}inpdftv20.csv",
+        "--v21",
+        "data/processed/{batch}inpdftv21.csv",
+        "--reference",
+        "05_analysis/data/publishinpdftv22.csv",
+        "--reference-index",
+        "{reference_index}",
+        "--dataset-id",
+        "{batch}",
+        "--display-label",
+        "{display_label}",
+        "--output",
+        "reports/{batch}/metrics.json"
+      ],
+      "inputs": [
+        "data/raw/{batch}.csv",
+        "work/{batch}inpout/{batch}inpout_tdv2.csv",
+        "work/{batch}inpout/{batch}inpdftv20.csv",
+        "data/processed/{batch}inpdftv21.csv",
+        "data/processed/{batch}inpdftv22.csv",
+        "05_analysis/data/publishinpdftv22.csv"
+      ],
+      "outputs": [
+        "reports/{batch}/metrics.json"
+      ],
+      "external_mutation": false
+    },
+    "S70_ANALYZE": {
+      "entrypoint": "05_analysis/plotters/plot_pareto_s1ti_socmegap.py",
+      "argv_template": [
+        "data/processed/{batch}inpdftv22.csv",
+        "--output",
+        "results/figures/{batch}/pareto_ratio.png"
+      ],
+      "inputs": [
+        "data/processed/{batch}inpdftv22.csv"
+      ],
+      "outputs": [
+        "results/figures/{batch}/pareto_ratio.png"
+      ],
+      "external_mutation": false,
+      "note": "Representative analysis entrypoint; query analysis_entrypoints and each script --help for other metrics."
+    },
+    "S80_VISUALIZE": {
+      "entrypoint": "06_visualization/generate_molecule_images_with_props.py",
+      "argv_template": [
+        "data/processed/{batch}inpdftv22.csv",
+        "--output",
+        "results/figures/{batch}/molecules"
+      ],
+      "inputs": [
+        "data/processed/{batch}inpdftv22.csv"
+      ],
+      "outputs": [
+        "results/figures/{batch}/molecules"
+      ],
+      "external_mutation": false,
+      "note": "Representative visualization entrypoint; query analysis_entrypoints and each script --help for other renderers."
+    }
+  },
+  "parameter_edit_map": {
+    "cluster_paths_and_resources": "config/cluster.env",
+    "standard_opt_protocol": "01_structure_preparation/gjf_to_inp.sh",
+    "heavy_opt_protocol": "01_structure_preparation/gjf_to_inpp13.sh",
+    "standard_td_protocol": "01_structure_preparation/gjf_to_inptd.sh",
+    "heavy_td_protocol": "01_structure_preparation/gjf_to_inptdp13.sh",
+    "targeting_windows": "05_analysis/plotters/plot_targeting.py CLI",
+    "pareto_axes_and_series": "05_analysis/plotters/plot_pareto_s1ti_socme.py CLI and 05_analysis/plotters/plot_pareto_s1ti_socmegap.py CLI",
+    "chemical_space_sampling": "05_analysis/plotters/plotsample.py CLI",
+    "molecule_image_properties": "06_visualization/generate_molecule_images_with_props.py",
+    "metrics_inputs_thresholds_and_reference": "07_validation/collect_metrics.py CLI"
+  },
+  "analysis_entrypoints": {
+    "frontier_orbitals": "05_analysis/plotters/plot_boxplot_HL.py",
+    "s1_t1_energy": "05_analysis/plotters/plot_boxplot_s1t1.py",
+    "singlet_triplet_gaps": "05_analysis/plotters/plot_boxplot_s1_t1ti.py",
+    "soc_distribution": "05_analysis/plotters/plot_boxplot_socme.py",
+    "soc_ridge": "05_analysis/plotters/plot_ridge_socmev2.py",
+    "pareto_gap_soc": "05_analysis/plotters/plot_pareto_s1ti_socme.py",
+    "pareto_gap_soc_ratio": "05_analysis/plotters/plot_pareto_s1ti_socmegap.py",
+    "molecular_properties": "05_analysis/plotters/plot_summary.py",
+    "state_relationships": "05_analysis/plotters/plot_summary2.py",
+    "targeting_proxies": "05_analysis/plotters/plot_targeting.py",
+    "decoration_statistics": "05_analysis/plotters/plot_decorations_statistics.py",
+    "chemical_space": "05_analysis/plotters/plotsample.py",
+    "molecule_images": "06_visualization/generate_molecule_images_with_props.py",
+    "scaffold_images": "06_visualization/scaffold/generate_mol_and_scaffold_figs.py"
+  },
+  "analysis_parameter_interfaces": {
+    "discovery_command_template": "python3 {entrypoint} --help",
+    "metrics": {
+      "entrypoint": "07_validation/collect_metrics.py",
+      "adjustable": [
+        "stage input paths",
+        "dataset_id",
+        "display_label",
+        "reference path/index or no-reference",
+        "LogP window",
+        "TPSA window",
+        "output path"
+      ]
+    },
+    "targeting": {
+      "entrypoint": "05_analysis/plotters/plot_targeting.py",
+      "defaults": {
+        "filter_imaginary": false,
+        "charge_max": 6,
+        "positive_threshold": 0,
+        "logp_min": 1.0,
+        "logp_max": 5.0,
+        "tpsa_min_angstrom2": 20.0,
+        "tpsa_max_angstrom2": 120.0,
+        "save_pdf": false,
+        "facets": true
+      },
+      "recommended_quality_override": {
+        "filter_imaginary": true
+      }
+    },
+    "chemical_space_sampling": {
+      "entrypoint": "05_analysis/plotters/plotsample.py",
+      "defaults": {
+        "n_pick": 10,
+        "method": "tsne",
+        "pre_sample": 50000,
+        "morgan_radius": 2,
+        "fingerprint_bits": 2048,
+        "seed": 42,
+        "umap_neighbors": 30,
+        "umap_min_dist": 0.1,
+        "tsne_perplexity": 30.0,
+        "pictos": "config/pictos.txt",
+        "plot_dir": "results/figures/chemical_space"
+      },
+      "outputs": [
+        "data/processed/{selection_name}.csv",
+        "results/figures/{batch}/chemical_space/{selection_name}_{method}_coordinates.csv",
+        "results/figures/{batch}/chemical_space/{selection_name}_{method}_v11_final.png"
+      ]
+    },
+    "pareto": {
+      "entrypoints": [
+        "05_analysis/plotters/plot_pareto_s1ti_socme.py",
+        "05_analysis/plotters/plot_pareto_s1ti_socmegap.py"
+      ],
+      "defaults": {
+        "x_min": 0.0,
+        "x_max": 0.6,
+        "width_in": 10,
+        "height_in": 8,
+        "show_all_pareto_fronts": true
+      },
+      "adjustable": [
+        "input datasets",
+        "output path",
+        "axis bounds",
+        "figure size",
+        "displayed Pareto series"
+      ]
+    },
+    "molecule_images": {
+      "entrypoints": [
+        "06_visualization/generate_molecule_images.py",
+        "06_visualization/generate_molecule_images_with_props.py",
+        "06_visualization/generate_top_selected_images.py"
+      ],
+      "adjustable": [
+        "input CSV",
+        "SMILES/property columns",
+        "RDKit or Open Babel backend",
+        "top N",
+        "output directory",
+        "single-row test mode"
+      ]
+    }
+  },
+  "quality_contract": {
+    "normal_termination_marker": "ORCA TERMINATED NORMALLY",
+    "minimum_flag_column": "Imaginary",
+    "minimum_flag_accepted_values": [
+      "No",
+      "False",
+      0
+    ],
+    "required_v22_columns": [
+      "ID",
+      "SMILES",
+      "S1_energy_eV",
+      "T1_energy_eV",
+      "S1_fosc_D2",
+      "S1_wavelength_nm",
+      "min_positive_S1-Ti",
+      "max_SOCME_S1_Ti_value",
+      "max_SOCME_over_deltaE_S1_Ti_value",
+      "HOMO(eV)",
+      "LUMO(eV)",
+      "Gap(eV)",
+      "Dipole(D)",
+      "Imaginary",
+      "LogP",
+      "TPSA",
+      "SA_Score"
+    ]
+  },
+  "default_analysis_windows": {
+    "logp": [
+      1.0,
+      5.0
+    ],
+    "tpsa_angstrom2": [
+      20.0,
+      120.0
+    ],
+    "warning": "These are visualization defaults, not universal scientific constraints. The bundled pic16/S1 dataset has no rows in the joint default LogP/TPSA window."
+  }
+}

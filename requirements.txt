@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+seaborn
+scipy
+tqdm
+Pillow
+openpyxl
+scikit-learn
+umap-learn
+rdkit
+
+# The `obabel` executable is also required by structure and image scripts.
+# Conda installation is recommended because pip does not install this CLI.

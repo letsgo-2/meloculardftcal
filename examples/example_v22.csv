@@ -1,0 +1,6 @@
+ID,SMILES,Scaffold,Molecular_Weight,S1_energy_eV,T1_energy_eV,S1_fosc_D2,S1_wavelength_nm,charge,S1-T1,min_positive_S1-Ti,Ti_for_min_positive,max_SOCME_S1_Ti_value,max_SOCME_S1_Ti_index,max_SOCME_over_deltaE_S1_Ti_value,max_SOCME_over_deltaE_S1_Ti_index,HOMO(eV),LUMO(eV),Gap(eV),Dipole(D),Imaginary,LogP,TPSA,Rotatable_Bonds,SA_Score
+example_0001,CCO,,46.07,4.10,3.20,0.010,302.4,0,0.90,0.20,T2,0.10,T2,0.50,T2,-7.10,-0.50,6.60,1.70,No,-0.001,20.23,0,1.98
+example_0002,c1ccccc1,,78.11,4.80,3.70,0.020,258.3,0,1.10,0.18,T3,0.15,T3,0.83,T3,-6.40,-0.80,5.60,0.00,No,1.687,0.00,0,1.00
+example_0003,CC(=O)O,,60.05,4.50,3.60,0.015,275.5,0,0.90,0.14,T2,0.12,T2,0.86,T2,-7.00,-1.20,5.80,1.74,No,-0.302,37.30,0,1.51
+example_0004,CCN,,45.08,4.00,3.30,0.011,310.0,0,0.70,0.10,T2,0.18,T2,1.80,T2,-6.20,-0.40,5.80,1.20,No,-0.035,26.02,0,2.17
+example_0005,CCOC,,60.10,3.90,3.25,0.025,317.9,0,0.65,0.08,T3,0.22,T3,2.75,T3,-6.00,-0.30,5.70,1.10,No,0.653,9.23,1,2.03

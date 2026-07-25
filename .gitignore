@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+config/cluster.env
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+*~
+
+# ORCA and quantum-chemistry runtime products
+*.log
+*.gbw
+*.hess
+*.engrad
+*.densities
+*.property.txt
+*.trj
+*.tmp
+*.out.*
+*.err.*
+
+# Generated reports and figures
+plots/
+*.png
+*.pdf
+*.xlsx
+
+# Local work and large datasets
+work/*
+!work/.gitkeep
+results/*
+!results/figures/
+results/figures/*
+!results/figures/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
